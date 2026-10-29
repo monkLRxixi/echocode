@@ -1,0 +1,31 @@
+{
+  "name": "echocode",
+  "version": "0.3.0",
+  "description": "A Claude Code\u2013style terminal coding agent. TypeScript + Ink. Green/white by default.",
+  "type": "module",
+  "bin": {
+    "echocode": "bin/echocode.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsx src/main.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "demo": "tsx src/main.ts --mock -p -y \"create a file called hello.txt with a haiku about terminals\"",
+    "repl": "tsx src/main.ts --mock",
+    "settings": "tsx src/main.ts settings"
+  },
+  "dependencies": {
+    "ink": "^6.0.0",
+    "react": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "license": "MIT"
+}
