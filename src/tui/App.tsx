@@ -13,6 +13,7 @@ import { VERSION } from "../prompt.js";
 import { COMMANDS, completionFor, displayText, findCommand, suggestCommands, type SlashCommand } from "./commands.js";
 import { itemLines, transcriptLines, type Item, type Line, type Span } from "./lines.js";
 import { env } from "../env.js";
+import { displayPath } from "../platform.js";
 
 /* ------------------------------- state ------------------------------ */
 
@@ -681,7 +682,7 @@ function Footer({
   scroll: number;
   cols: number;
 }) {
-  const cwd = cfg.cwd.replace(process.env.HOME ?? "", "~");
+  const cwd = displayPath(cfg.cwd);
   const top = ` ${cfg.model} · ${cfg.providerName} [${cfg.formatId}] · ${cwd}`;
 
   const usageText = `in ${usage.inputTokens ?? 0} · out ${usage.outputTokens ?? 0}${

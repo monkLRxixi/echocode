@@ -2,8 +2,9 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import type { SystemBlock, ToolSpec } from "./types.js";
+import { isWindows } from "./platform.js";
 
-export const VERSION = "0.3.0";
+export const VERSION = "0.3.1";
 export const IDENTITY =
   "You are echocode, a terminal coding agent. You work inside the user's shell, on their real files.";
 
@@ -64,7 +65,9 @@ export function buildSystem(opts: {
     `- Working directory: ${cwd}`,
     `- Is a git repository: ${fs.existsSync(path.join(cwd, ".git")) ? "true" : "false"}`,
     `- Platform: ${process.platform}`,
-    `- Shell: ${process.env.SHELL ?? "(unknown)"}`,
+    `- Shell: ${isWindows ? (process.env.ComSpec ?? "cmd.exe") : (process.env.SHELL ?? "(unknown)")}${
+      isWindows ? " (Bash tool runs cmd.exe: use Windows syntax, e.g. dir instead of ls)" : ""
+    }`,
     `- OS: ${os.type()} ${os.release()} (${os.arch()})`,
     `- Today's date: ${new Date().toISOString().slice(0, 10)}`,
     `- You are powered by ${model} through the ${providerLabel} wire format.`,

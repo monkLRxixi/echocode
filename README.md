@@ -329,6 +329,24 @@ git clone https://github.com/monkLRxixi/echocode && cd echocode
 npm ci && npm run build && npm i -g .
 ```
 
+## Windows
+
+Works on Windows 10+ (Windows Terminal recommended — it is the only console that
+reliably has VT escape processing enabled, which the TUI needs).
+
+- `bin/echocode.js` imports the build through a `file://` URL. A native path
+  (`O:\...\dist\cli.js`) makes Node's ESM loader throw
+  `ERR_UNSUPPORTED_ESM_URL_SCHEME`, which is what broke 0.3.0 on Windows.
+- the Bash tool runs `%ComSpec%` (`cmd.exe`) with `/d /s /c`, and a timeout kills
+  the tree with `taskkill /T /F`; on POSIX it still uses `$SHELL -lc` and a
+  process-group kill
+- paths are shown relative to `os.homedir()` (`C:\Users\you` → `~`), matched
+  case-insensitively
+- file reads and command output are normalised from CRLF to LF so wrapping and
+  diffs are identical across platforms
+- the system prompt tells the model which shell it is actually in
+  (`cmd.exe: use Windows syntax, e.g. dir instead of ls`)
+
 ## Notes
 
 - Mock mode is a real HTTP server on `127.0.0.1:0` speaking the actual SSE

@@ -1,6 +1,6 @@
 {
   "name": "echocode",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A Claude Code–style terminal coding agent (TypeScript + Ink, green/white TUI) speaking Anthropic Messages, OpenAI Chat Completions and OpenAI Responses.",
   "keywords": [
     "cli",

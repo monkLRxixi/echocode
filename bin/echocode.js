@@ -6,7 +6,10 @@ import { spawnSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 
-const dist = fileURLToPath(new URL("../dist/cli.js", import.meta.url));
+// Note: `import()` needs a file:// URL, not a native path — on Windows a bare
+// `O:\...\dist\cli.js` throws ERR_UNSUPPORTED_ESM_URL_SCHEME.
+const distUrl = new URL("../dist/cli.js", import.meta.url);
+const dist = fileURLToPath(distUrl);
 const src = fileURLToPath(new URL("../src/main.ts", import.meta.url));
 
 function hasTsx() {
@@ -20,7 +23,7 @@ function hasTsx() {
 
 async function run() {
   if (existsSync(dist)) {
-    const { main } = await import(dist);
+    const { main } = await import(distUrl.href);
     await main(process.argv.slice(2));
     return;
   }

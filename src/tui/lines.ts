@@ -8,6 +8,7 @@
  */
 import { p } from "./theme.js";
 import { summarise } from "../render/plain.js";
+import { displayPath, normalizeNewlines } from "../platform.js";
 
 export type Span = { text: string; color?: string; bold?: boolean };
 export type Line = Span[];
@@ -25,7 +26,7 @@ const TOOL_OUTPUT_LINES = 6;
 export function wrap(text: string, width: number): string[] {
   const w = Math.max(1, Math.floor(width));
   const out: string[] = [];
-  for (const para of String(text ?? "").split("\n")) {
+  for (const para of normalizeNewlines(String(text ?? "")).split("\n")) {
     if (para === "") {
       out.push("");
       continue;
@@ -69,7 +70,7 @@ export function wrap(text: string, width: number): string[] {
 export function itemLines(item: Item, width: number): Line[] {
   switch (item.kind) {
     case "banner": {
-      const short = item.cwd.replace(process.env.HOME ?? "", "~");
+      const short = displayPath(item.cwd);
       const rows: Line[] = [[{ text: short, color: p.dim }]];
       if (item.label) rows.push([{ text: item.label, color: p.warn }]);
       return rows;
@@ -121,7 +122,7 @@ export function itemLines(item: Item, width: number): Line[] {
           : [],
       ];
 
-      const out = item.text.split("\n").filter((l) => l !== "");
+      const out = normalizeNewlines(item.text).split("\n").filter((l) => l !== "");
       const shown = out.slice(0, TOOL_OUTPUT_LINES);
       shown.forEach((line, i) => {
         const prefix = i === 0 ? "   ⎿ " : "     ";

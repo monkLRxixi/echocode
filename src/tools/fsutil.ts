@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { normalizeNewlines } from "../platform.js";
 
 export interface ToolContext {
   cwd: string;
@@ -34,7 +35,7 @@ export function relPath(ctx: ToolContext, abs: string): string {
 export function readTextFile(abs: string): string {
   const buf = fs.readFileSync(abs);
   if (buf.includes(0)) throw new Error(`${abs} looks binary (contains NUL bytes)`);
-  return buf.toString("utf8");
+  return normalizeNewlines(buf.toString("utf8"));
 }
 
 export function fmtBytes(n: number): string {

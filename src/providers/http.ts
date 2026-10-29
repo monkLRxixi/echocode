@@ -47,7 +47,7 @@ export async function postJson(
   const maxAttempts = o.maxAttempts ?? 3;
   const baseHeaders: Record<string, string> = {
     "content-type": "application/json",
-    "user-agent": o.userAgent ?? "echocode/0.3.0",
+    "user-agent": o.userAgent ?? "echocode/0.3.1",
     ...(o.wantStream ? { accept: "text/event-stream" } : { accept: "application/json" }),
     ...authHeaders(o),
     ...(o.headers ?? {}),
