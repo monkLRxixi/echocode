@@ -290,6 +290,45 @@ Written from the reverse-engineering notes in `../cc/REPORT.md`:
 Deliberately not copied: deferred/ToolSearch tool loading, remote feature flags,
 prompt hashing, and the model-side risk classifier (`auto` uses a local rule).
 
+## Build & publish
+
+```bash
+npm ci                 # install devDependencies
+npm run typecheck      # tsc --noEmit
+npm run build          # tsc -> dist/  (prepack also runs this)
+npm run check:pack     # == npm pack --dry-run: verify dist/ is in the tarball
+node bin/echocode.js --version
+```
+
+The published artifact is `bin/` + `dist/` (`files` in package.json); `src/` is
+not shipped, so the tarball never depends on `tsx`. `prepack` builds, and
+`prepublishOnly` type-checks before the upload.
+
+```bash
+npm version patch -m "echocode %s"     # bumps, commits, tags
+git push --follow-tags
+
+npm login                              # or NPM_TOKEN in CI
+npm publish --dry-run                  # inspect name/version/files
+npm publish                            # unscoped
+npm publish --access public            # if you move to @scope/echocode
+```
+
+This machine is configured against `registry.npmmirror.com`, which is a read
+mirror — publishing has to go to the real registry:
+
+```bash
+npm publish --registry=https://registry.npmjs.org/
+```
+
+Installing from git (`npm i -g github:monkLRxixi/echocode`) needs a build on the
+consumer side, since git trees do not contain `dist/`:
+
+```bash
+git clone https://github.com/monkLRxixi/echocode && cd echocode
+npm ci && npm run build && npm i -g .
+```
+
 ## Notes
 
 - Mock mode is a real HTTP server on `127.0.0.1:0` speaking the actual SSE

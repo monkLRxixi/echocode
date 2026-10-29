@@ -1,21 +1,54 @@
 {
   "name": "echocode",
   "version": "0.3.0",
-  "description": "A Claude Code\u2013style terminal coding agent. TypeScript + Ink. Green/white by default.",
+  "description": "A Claude Code–style terminal coding agent (TypeScript + Ink, green/white TUI) speaking Anthropic Messages, OpenAI Chat Completions and OpenAI Responses.",
+  "keywords": [
+    "cli",
+    "ai",
+    "agent",
+    "coding-agent",
+    "code-assistant",
+    "llm",
+    "terminal",
+    "tui",
+    "ink",
+    "react",
+    "anthropic",
+    "openai"
+  ],
+  "homepage": "https://github.com/monkLRxixi/echocode#readme",
+  "bugs": {
+    "url": "https://github.com/monkLRxixi/echocode/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/monkLRxixi/echocode.git"
+  },
+  "author": "monkLRxixi",
+  "license": "MIT",
   "type": "module",
   "bin": {
     "echocode": "bin/echocode.js"
   },
+  "files": [
+    "bin",
+    "dist"
+  ],
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "clean": "node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\"",
     "dev": "tsx src/main.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit",
+    "check": "npm run typecheck",
     "demo": "tsx src/main.ts --mock -p -y \"create a file called hello.txt with a haiku about terminals\"",
     "repl": "tsx src/main.ts --mock",
-    "settings": "tsx src/main.ts settings"
+    "settings": "tsx src/main.ts settings",
+    "prepack": "npm run build",
+    "prepublishOnly": "npm run typecheck",
+    "pack:check": "npm pack --dry-run"
   },
   "dependencies": {
     "ink": "^6.0.0",
@@ -26,6 +59,5 @@
     "@types/react": "^19.0.0",
     "tsx": "^4.19.0",
     "typescript": "^5.7.0"
-  },
-  "license": "MIT"
+  }
 }
